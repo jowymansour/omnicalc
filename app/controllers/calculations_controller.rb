@@ -84,27 +84,39 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.length
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    number_median_1 = @sorted_numbers[(@sorted_numbers.length - 1) / 2]
 
-    @sum = "Replace this string with your answer."
+    number_median_2 = @sorted_numbers[@sorted_numbers.length / 2]
 
-    @mean = "Replace this string with your answer."
+    @median = (number_median_1 + number_median_2) / 2
 
-    @variance = "Replace this string with your answer."
+    @sum = @numbers.inject{ |sum, value| sum + value } # Can use @numbers.inject(:+) with Ruby +1.8.7
+    #Documentation for inject (http://ruby-doc.org/core-2.2.3/Enumerable.html#method-i-inject)
 
-    @standard_deviation = "Replace this string with your answer."
+    @mean = @sum / @count
 
-    @mode = "Replace this string with your answer."
+    @variance = @numbers.inject(0){ |sum_values, i| sum_values + (i - @mean) ** 2 } / @count
+    # inject(0) because the first value of sum_values need to be 0 (and not the first element of @numbers)
+
+    @standard_deviation = @variance ** 0.5
+
+    #MODE
+    #First we create an Hash from the Array using inject, mapping each value of the array to its frequency
+    numbers_hash = @numbers.inject(Hash.new(0)) { |hash, specific_number| hash[specific_number] += 1; hash}
+
+    #Than we look at the maximum frequency (http://ruby-doc.org/core-2.2.3/Enumerable.html#method-i-max_by)
+    @mode = @numbers.max_by { |valeur| numbers_hash[valeur] }
+
 
     # ================================================================================
     # Your code goes above.
