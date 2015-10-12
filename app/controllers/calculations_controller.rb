@@ -62,7 +62,7 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = (@ending - @starting)
+    @seconds = @ending - @starting
     @minutes = @seconds / 60
     @hours = @minutes / 60
     @days = @hours / 24
